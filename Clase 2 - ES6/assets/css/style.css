@@ -62,11 +62,10 @@ body{
     width:100%;
 }
 
-#firstContainer{ /* DIV BLANCO */
+#firstContainer{ 
     width:40%;
     height: 100vh;
     display: flex;
-   /* background-color:rgba(16, 39, 73, 0.5); */
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -75,7 +74,7 @@ body{
     flex-wrap: wrap;
 }
 
-#secondContainer{ /* DIV GRIS */
+#secondContainer{ 
     width:60%;
     background-image: url("../img/cool-background-two.png");
     position: absolute;

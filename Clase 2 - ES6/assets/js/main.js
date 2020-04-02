@@ -15,12 +15,6 @@ const alumnos = [
 
 // 1. Obtener un array de strings con solo nombres de cada alumno usando .map()
 
-/*
-const names = alumnos.map( ({nombre}) => {
-    return nombre;
-})
-*/
-
 const names = alumnos.map( ({nombre}) => nombre);
 console.log('1) Los nombres de los alumnos son', names);
 
@@ -59,14 +53,14 @@ console.log('6) Los alumnos que empiezan con letra M son', students_m_names);
 
 // 7. Obtener un array agregando una propiedad/key/atributo más a cada elemento usando .map()
 
-const materias = ['Diseño Aplicado', 'Programación', 'Sonido', '3D', 'Comunicación & Cultura Digital', 'Marketing', 'Investigación UX']
+const materias = ['Diseño Aplicado', 'Programación', 'Sonido', '3D', 'Comunicación & Cultura Digital', 'Marketing', 'Investigación UX'];
 
-const newKey = alumnos.map( (alumno) => {
+const new_key = alumnos.map( (alumno) => {
     alumno.materiaFavorita = materias[ Math.floor(Math.random() * 7) ];
     return alumno;
 })
 
-console.log('7) Los alumnos ahora tienen materia favorita', newKey);
+console.log('7) Los alumnos ahora tienen materia favorita', new_key);
 
 // 8. Obtener a partir de la constante en 3, el promedio de edad del curso dividiendo la misma por el total de alumnos
 
@@ -138,7 +132,6 @@ let titleInput = document.getElementById("titleValue");
 
 async function getDataWithAsync() {
 
-    document.getElementById("songTitle").style.marginTop = "2em";
     document.getElementById("songTitle").innerHTML = "";
     document.getElementById("content").innerHTML = "";
     document.getElementById("loadingState").classList.remove("hidden");
@@ -149,13 +142,13 @@ async function getDataWithAsync() {
     artistValue = artistValue.replace("&", "And");
     titleValue = titleValue.replace("&", "And");
 
-    const response = await fetch('https://api.lyrics.ovh/v1/'+artistValue.replace(new RegExp("\\s", "g"), "%20")+'/'+titleValue.replace(new RegExp("\\s", "g"), "%20")+''); // Reemplazar los espacios en blanco de la URL con %20 (caracter que se refiere al espacio vacio)para poder escribir más de una palabra en cada campo.
+    const response = await fetch('https://api.lyrics.ovh/v1/'+artistValue.replace(new RegExp("\\s", "g"), "%20")+'/'+titleValue.replace(new RegExp("\\s", "g"), "%20")+''); 
     const lyrics = await response.json();
     return lyrics;
 
 }
 
-const validate = () => { // Función para habilitar el boton solo si ambos campos están llenos.
+const validate = () => { 
 
     let artistValue = artistInput.value;
     let titleValue = titleInput.value;
@@ -179,7 +172,7 @@ const showLyrics = async () => {
         const {lyrics} = lyricsContent;
 
         document.getElementById("songTitle").innerHTML = artistValue.toUpperCase() + " " + "-" + " " + titleValue;
-        document.getElementById("content").innerHTML = lyrics.replace(new RegExp("\n", "g"), "<br>"); // Cada vez que se encuentra "\n" se reemplaza por "<br>".
+        document.getElementById("content").innerHTML = lyrics.replace(new RegExp("\n", "g"), "<br>");
         document.getElementById("loadingState").classList.add("hidden");
 
     } catch (error){
@@ -187,8 +180,7 @@ const showLyrics = async () => {
         document.getElementById("songTitle").innerHTML = ":(";
         document.getElementById("content").innerHTML = "No se encontró la letra de la canción especificada. Intente de nuevo.";
         document.getElementById("loadingState").classList.add("hidden");
-        document.getElementById("songTitle").style.marginTop = "31%";
-        console.log('13) Error al obtener los lyrics', error);
+
 
     }
 
