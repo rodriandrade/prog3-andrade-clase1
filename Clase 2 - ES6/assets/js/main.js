@@ -180,6 +180,7 @@ const showLyrics = async () => {
         document.getElementById("songTitle").innerHTML = ":(";
         document.getElementById("content").innerHTML = "No se encontró la letra de la canción especificada. Intente de nuevo.";
         document.getElementById("loadingState").classList.add("hidden");
+        document.getElementById("songTitle").style.marginTop = "31%";
 
 
     }
