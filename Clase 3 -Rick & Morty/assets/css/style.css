@@ -173,3 +173,8 @@ body{
 .button.is-info:hover {
     background-color: rgb(73, 165, 72);
 }
+
+#personal{
+    color:white;
+    text-align: center;
+}
