@@ -29,7 +29,7 @@
                 </p>
                 <a id="randomButton"class="button is-info random_search">Random</a>
             </div>
-
+            
             <!--
             <div class="field is-grouped">
               <p class="control is-expanded">
@@ -77,106 +77,7 @@
     </div>
 
     <script src="assets/js/script.js" ></script>
-    <script>
-/*
-        const idFill = (characters) => { 
-          const idCharacter = characters.map(({id}, index) => {
-            let buttons = document.querySelectorAll('.open_modal');
-            buttons[index].setAttribute('onclick', 'getInfo('+id+')');
-          });
-        }
-
-        const getInfo = async (idCharacter) => {
-
-          let episodeData = [];
-         // const characters = await getCharacters(baseURL, 1, 20); 
-          const characterSelected = characters.find( async ({id}) => await id === idCharacter);
-          const {episode, origin} = characterSelected;
-          const {url} = origin;
-
-          const response = await fetch(url); // BUSCA LA INFORMACIÓN DEL PLANETA
-          const locationData = await response.json();
-          const {name, dimension, residents} = locationData; 
-          console.log(locationData)
-
-          for(i=0;i<episode.length;i++){
-            const response = await fetch(episode[i]);
-            episodeData.push(await response.json());
-          } 
-
-          console.log(episodeData);
-          //modalItem(locationData, episodeData);
-
-        }
-/*
-        const modalItem = (planet, episodes) =>{
-
-          const getEpisodesInfo = episodes.map(({name, episode, air_date}) => {
-            return {name: name, episode: episode, air_date: air_date};
-          })
-
-          console.log(getEpisodesInfo);
-
-          const $modalContent = document.querySelector('.modal-card-body');
-          for(i=0;i<getEpisodesInfo.length;i++){
-            $modalContent.innerHTML += `<p>${getEpisodesInfo[i].name}</p><p>${getEpisodesInfo[i].episode}</p><p>${getEpisodesInfo[i].air_date}</p>`;
-          } 
-
-        } */
-
-/*
-        const appendModalElements = () => {
-            const $modalContent = document.querySelector('.modal-content');
-            const modalItemHtml = modalItem();
-            $modalContent.innerHTML = modalItemHtml;
-        }
-*/
   
-
-/*
-
-  const getInfo = async (idCharacter) => {
-
-const characters = await getCharacters(baseURL, 1, 20); 
-const characterSelected = characters.find( async ({id}) => await id === idCharacter);
-const {episode, origin} = characterSelected;
-const {url} = origin;
-
-const getEpisodes = episode.map( async (link) => { // BUSCA LOS EPISODIOS
-  const response = await fetch(link);
-  const episodeData = await response.json();
-  //const { episode, name, air_date } = episodeData;
-  console.log(episodeData); 
-  return episodeData;
-  //return episode, name, air_date;
-});
-
-
-const getEpisode = async (link) => {
-    for(i=0;i<episode.length-1;i++){
-    const response = await fetch(link);
-    const episodeData = await response.json();
-    return episodeData;
-  }
-}
-
-const response = await fetch(url); // BUSCA LA INFORMACIÓN DEL PLANETA
-const locationData = await response.json();
-const {name, dimension, residents} = locationData; 
-console.log("Información del planeta:", locationData);
-
-
-const residentsInfo = residents.map( async (link) => {
-  const response = await fetch(link);
-  const residentsData = await response.json();
-  const { name } = residentsData; 
-  return name; 
-});
-
-}
-
-*/
-    </script>
 </body>
 
 </html>
