@@ -1,173 +1,182 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello Bulma!</title>
+    <title>Hello Rick, hello Morty!</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Questrial&display=swap" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  </head>
+</head>
 
-  <body>
-
+<body>
     <section class="section">
+        <div class="container">
+            <div id="header">
+              <img id="logo" src="assets/img/logo.png" alt="rick_and_morty_logo">
+              <h1 class="subtitle">Characters from the Rick & Morty's universe</h1>
+            </div>
+            <div class="field is-grouped">
+                <p class="control is-expanded">
+                    <input class="input input_search" type="text" placeholder="Find a character">
+                </p>
+                <p class="control">
+                    <a id="searchButton" class="button is-primary handle_search">
+                        Search
+                    </a>
+                </p>
+                <a id="randomButton"class="button is-info random_search">Random</a>
+            </div>
 
-      <div class="container">
+            <!--
+            <div class="field is-grouped">
+              <p class="control is-expanded">
+                  <input class="input input_search_gif" type="text" placeholder="Find a character">
+              </p>
+              <p class="control">
+                  <a class="button is-info handle_search_gif">
+                      Search GIF
+                  </a>
+              </p>
+            </div>
+             -->
 
-        <h1 class="title">
-          Rick & Morty App
-        </h1>
-
-        <p class="subtitle">
-          My first app with<strong> Fetch </strong>!
-        </p>
-
-        <div class="field is-grouped">
-          <p class="control is-expanded">
-            <input class="input input_search" type="text" placeholder="Find a character">
-          </p>
-          <p class="control">
-            <a class="button is-info handle_search">
-              Search
-            </a>
-          </p>
+            <div class="columns is-multiline grid">
+            </div>
+            
         </div>
-
-        <div class="columns is-multiline grid">
-        
-        </div>
-
-      </div>
-
     </section>
 
     <div class="modal">
       <div class="modal-background"></div>
-      <div class="modal-content">
-        <!-- Any other Bulma elements you want -->
+      <div class="modal-card">
+        <section class="modal-card-body">
+          <div id="avatar">
+          </div>
+          <div id="content-frame">
+          <div id="episodeData">
+          </div>
+          </i><h4 class="title is-5">Appears in the following episodes:</h4>
+          <div class="table-container">
+            <table class="table is-fullwidth">
+              <thead>
+                <th>Episode</th>
+                <th>Name</th>
+                <th>Air date</th>
+              </thead>
+              <tbody class="table is-striped">
+              </tbody>
+            </table>
+          </div> 
+        </div>
+        </section>
       </div>
-      <button class="modal-close is-large oper_modal" aria-label="close"></button>
+      <button class="modal-close is-large" aria-label="close"></button>
     </div>
 
-  <script>
+    <script src="assets/js/script.js" ></script>
+    <script>
+/*
+        const idFill = (characters) => { 
+          const idCharacter = characters.map(({id}, index) => {
+            let buttons = document.querySelectorAll('.open_modal');
+            buttons[index].setAttribute('onclick', 'getInfo('+id+')');
+          });
+        }
 
-    const cardItem = props => {
+        const getInfo = async (idCharacter) => {
 
-      const {image, name, species, origin} = props;
-      const {name: planet, url} = origin;
+          let episodeData = [];
+         // const characters = await getCharacters(baseURL, 1, 20); 
+          const characterSelected = characters.find( async ({id}) => await id === idCharacter);
+          const {episode, origin} = characterSelected;
+          const {url} = origin;
 
-      return `
-          <div class="column is-one-quarter">
-            <div class="card">
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img src="${image}" alt="Placeholder image">
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-left">
-                    <figure class="image is-48x48">
-                      <img src="${image}" alt="Placeholder image">
-                    </figure>
-                  </div>
-                  <div class="media-content">
-                    <p class="title is-4">${name}</p>
-                    <p class="title is-4">${species}</p>
-                    <p class="title is-4">${planet}</p>
-                  </div>
-                </div>
-            
-                <div class="content">
-                  <div class="buttons">
-                    <button class="button is-primary">Primary</button>
-                    <button class="button is-link">Link</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>`
+          const response = await fetch(url); // BUSCA LA INFORMACIÓN DEL PLANETA
+          const locationData = await response.json();
+          const {name, dimension, residents} = locationData; 
+          console.log(locationData)
 
-    }
+          for(i=0;i<episode.length;i++){
+            const response = await fetch(episode[i]);
+            episodeData.push(await response.json());
+          } 
+
+          console.log(episodeData);
+          //modalItem(locationData, episodeData);
+
+        }
+/*
+        const modalItem = (planet, episodes) =>{
+
+          const getEpisodesInfo = episodes.map(({name, episode, air_date}) => {
+            return {name: name, episode: episode, air_date: air_date};
+          })
+
+          console.log(getEpisodesInfo);
+
+          const $modalContent = document.querySelector('.modal-card-body');
+          for(i=0;i<getEpisodesInfo.length;i++){
+            $modalContent.innerHTML += `<p>${getEpisodesInfo[i].name}</p><p>${getEpisodesInfo[i].episode}</p><p>${getEpisodesInfo[i].air_date}</p>`;
+          } 
+
+        } */
 
 /*
-    const $grid = document.querySelector('.grid');
-    const cardElement = cardItem({image:'', name:'', species:'human', origin:{name:'Earth'}});
-    console.log(cardElement);
-
-    setTimeout( () => {
-      $grid.innerHTML += cardElement;
-    }, 5000);
+        const appendModalElements = () => {
+            const $modalContent = document.querySelector('.modal-content');
+            const modalItemHtml = modalItem();
+            $modalContent.innerHTML = modalItemHtml;
+        }
 */
+  
 
-    const getCharacters = async (baseURL, from, to) => {
-      const charactersRange = Array.from({length: to - from + 1}, (_,index)=>index + 1).join(',');
-      const url = `${baseURL}character/${charactersRange}`
-      const response = await fetch(url);
-      const characters = await response.json();
-      console.log(characters)
-      return characters;
-    }
+/*
 
-    const getCharactersByQuery = async (baseURL, query) => {
-      const url = `${baseURL}/character/?name=${query}`;
-      const response = await fetch (url);
-      const characters = await response.json();
-      return characters;
-    }
+  const getInfo = async (idCharacter) => {
 
-    const appendElements = (characters, emptyGrid) => {   
-      const $grid = document.querySelector('.grid');
+const characters = await getCharacters(baseURL, 1, 20); 
+const characterSelected = characters.find( async ({id}) => await id === idCharacter);
+const {episode, origin} = characterSelected;
+const {url} = origin;
 
-      if(emptyGrid){
-        $grid.innerHTML = null;
-      }
+const getEpisodes = episode.map( async (link) => { // BUSCA LOS EPISODIOS
+  const response = await fetch(link);
+  const episodeData = await response.json();
+  //const { episode, name, air_date } = episodeData;
+  console.log(episodeData); 
+  return episodeData;
+  //return episode, name, air_date;
+});
 
-      characters.forEach(character => {
-        const cardItemHtml = cardItem(character);
-        $grid.innerHTML += cardItemHtml;
-      });
-    }
 
-    const main = async () => {
-      const baseURL = "https://rickandmortyapi.com/api/"
-      // Parte 1 - Obtener elementos de la API y mostrarlos 
-      const characters = await getCharacters(baseURL, 1, 20);
-      appendElements(characters);
-      // Parte 2 - Obtener elementos de la API y mostrarlos 
-      const $input = document.querySelector('.input_search');
-      const $submit = document.querySelector('.handle_search');
+const getEpisode = async (link) => {
+    for(i=0;i<episode.length-1;i++){
+    const response = await fetch(link);
+    const episodeData = await response.json();
+    return episodeData;
+  }
+}
 
-      $submit.addEventListener('click', async (event)=>{
-        event.preventDefault();
-        const $input = document.querySelector('.input_search');
-        const valor = $input.value;
-        const charactersByQuery = await getCharactersByQuery(baseURL, valor);
-        appendElements(charactersByQuery.results, true);
-      })
+const response = await fetch(url); // BUSCA LA INFORMACIÓN DEL PLANETA
+const locationData = await response.json();
+const {name, dimension, residents} = locationData; 
+console.log("Información del planeta:", locationData);
 
-      const $modalOpenArr = document.querySelectorAll('.open_modal');
-      const $modal = document.querySelector('.modal');
-      const $modalClose = document.querySelector('.modal-close');
 
-      $modalOpenArr.forEach((boton)=>{
-        boton.addEventListener('click', ()=>{
-          $modal.classList.add('is-active');
-          console.log("click");
-        })
+const residentsInfo = residents.map( async (link) => {
+  const response = await fetch(link);
+  const residentsData = await response.json();
+  const { name } = residentsData; 
+  return name; 
+});
 
-      })
+}
 
-      $modalClose.addEventListener('click', () => {
-        $modal.classList.remove('is-active');
-      })
-
-    }
-
-    main();
-
-  </script>
-
-  </body>
+*/
+    </script>
+</body>
 
 </html>
