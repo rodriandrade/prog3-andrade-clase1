@@ -1,0 +1,22 @@
+.dropdownContainer{
+    margin-bottom:2em;
+    display: flex;
+    margin-left:6em;
+}
+
+.dropdown{
+    padding:0.5em;
+    border-radius:4px;
+    color: rgb(105, 105, 105);
+    border: 1px solid rgb(223, 223, 223);
+    font-size:1em;
+}
+
+.contDrop{
+    display:flex;
+    justify-content: left;
+    width: 85%;
+    margin: 0 auto;
+    margin-bottom:2em;
+}
+

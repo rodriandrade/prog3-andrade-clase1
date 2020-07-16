@@ -1,0 +1,52 @@
+.card{
+    display: flex;
+}
+
+.containerCard{
+    background-color: rgba(137, 204, 123, 0.158);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-bottom:2em;
+    box-shadow:  9px 9px 18px #d9d9d9, 
+             -9px -9px 18px #ffffff;
+    border-radius: 10px;
+}
+
+.bg-yellow {
+    background-color: rgb(194, 206, 255);
+  }
+
+.btnContainer{
+    display: flex;
+    align-items: center;
+}
+
+.avatarCont{
+    display: flex;
+    flex-direction: row;
+}
+
+.artistDataCont{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+}
+
+button{
+    margin-right:1em;
+}
+
+h2{
+    font-size:2em;
+    font-weight: 500;
+}
+
+.artistProfile{
+    display: flex;
+}
+
+.deleteBtn{
+    background-color: red !important;
+}
