@@ -451,37 +451,42 @@ class App extends React.Component {
      })
   }
 
+  // La llama el botón DELETE del componente CARD. 
   handleRemoveEmployee = id => {
     const { list } = this.state
     const listWithoutMusician = list.filter(musician => musician.id !== id)
     this.setState({ list: listWithoutMusician })
   }
 
+  // La llama el botón de "EDIT" que está en el componente CARD. Guarda en el state todo lo que aparece en setState
   handleEditMusician = employeeData => {
     const {name, id} = employeeData
     this.setState({
-        modalActive: true,
-        nameToEdit: name,
-        filterID: id
+        modalActive: true, // Abre el modal
+        nameToEdit: name, // Guarda el nombre del artista en el que se toco EDIT
+        filterID: id // Guarda el ID del artista
     })
   }
 
+  // CIERRA EL MODAL 
   handleClose = () =>{
       this.setState({
           modalActive: false
       })
   }
 
+  // La llama el INPUT del MODAL que está más abajo con el evento ONCHANGE. Guarda lo que el usuario escribe en el input. 
   editArtistName = event =>{
     const { value } = event.target
-    this.setState({ nameToEdit: value })
+    this.setState({ nameToEdit: value }) // Guarda el value del input (lo que el usuario escribio)
   }
 
+  // La llama el SUBMIT del FORM del MODAL. Guarda el nombre editado y lo muestra en la CARD. 
   changeArtistName = event => {
     event.preventDefault();
     const { list, filterID, nameToEdit } = this.state
-    const newName = list.find(musician => musician.id == filterID);
-    newName.name = nameToEdit;
+    const newName = list.find(musician => musician.id == filterID); // Busco el artista al que le quiero cambiar el nombre por el ID
+    newName.name = nameToEdit; // Le agrego el nombre (va a cambiar en la CARD)
   }
 
   componentDidMount() {
