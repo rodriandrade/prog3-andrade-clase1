@@ -7,7 +7,7 @@ const Header = (props) =>{
         <div className="App">
           <header className="header">
             <h1 class="title is-1">
-              Artists list
+              Artists
             </h1>
           </header>
         </div>
