@@ -468,13 +468,6 @@ class App extends React.Component {
     })
   }
 
-  // CIERRA EL MODAL 
-  handleClose = () =>{
-      this.setState({
-          modalActive: false
-      })
-  }
-
   // La llama el INPUT del MODAL que está más abajo con el evento ONCHANGE. Guarda lo que el usuario escribe en el input. 
   editArtistName = event =>{
     const { value } = event.target
@@ -487,7 +480,17 @@ class App extends React.Component {
     const { list, filterID, nameToEdit } = this.state
     const newName = list.find(musician => musician.id == filterID); // Busco el artista al que le quiero cambiar el nombre por el ID
     newName.name = nameToEdit; // Le agrego el nombre (va a cambiar en la CARD)
+    this.setState({
+        modalActive: false
+    })
   }
+
+  // CIERRA EL MODAL 
+  handleClose = () =>{
+    this.setState({
+        modalActive: false
+    })
+}
 
   componentDidMount() {
       //FETCH DE DATA
