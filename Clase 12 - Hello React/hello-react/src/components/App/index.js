@@ -35,6 +35,222 @@ class App extends React.Component {
         id: faker.random.uuid(),
       }))
 
+    this.state = {
+        list: [],
+        listBackup: '',
+        empleadoDelMes: null,
+        employeeName: '',
+        genreFilter: '',
+        selectedGenre: '',
+        modalActive: false,
+        nameToEdit: '',
+        filterID: '',
+        isLoaded: false,
+     };
+
+     this.handleEmpleadoMesClick = this.handleEmpleadoMesClick.bind(this)
+     this.handleAddEmployeeSubmit = this.handleAddEmployeeSubmit.bind(this)
+     this.handleAddEmployeeChange = this.handleAddEmployeeChange.bind(this)
+  }
+
+    componentDidMount() {
+    //FETCH DE DATA
+    
+        fetch('https://artists-api.vercel.app/artists')
+        .then((response) => {
+            return response.json()  
+        })
+        .then((musicians) => {
+            console.log(musicians)
+            this.setState({
+                isLoaded: true,
+                list: musicians,
+            })
+        })
+    
+    }
+
+  handleEmpleadoMesClick(employeeId){
+    const { list } = this.state
+    this.setState({
+        empleadoDelMes:employeeId
+    })
+    console.log('parametro',employeeId) 
+    console.log(list);
+  }
+
+  handleAddEmployeeChange = event => {
+    const { value } = event.target
+    this.setState({ employeeName: value })
+  }
+
+  handleGenreChange = event => {
+        const { value } = event.target
+        const { listBackup } = this.state
+        const listFilteredByGenre = listBackup.filter(musician => musician.genre === value)
+        this.setState({ 
+            genreFilter: value,
+            selectedGenre: value,
+            list: listFilteredByGenre
+        })
+  }
+
+  handleRemoveSelectedGenre = () => {
+    this.setState(prevState => ({ list: prevState.listBackup, selectedGenre: '' }))
+ }
+
+  handleAddEmployeeSubmit = event => {
+    event.preventDefault()
+    const { list, employeeName } = this.state
+    const randomGenre = ["Progressive Trance", "Uplifting Trance", "Techno", "Pop & Rock", "Rock", "Metal", "Deep House", "Progressive House", "Drum 'n' Bass", "Synth Pop"];
+
+    const newEmployee = {
+        name: employeeName,
+        genre: randomGenre[ Math.floor(Math.random() * 10) ],
+        avatar: faker.image.avatar(),
+        id: faker.random.uuid(),
+    }
+
+    const newList = [newEmployee, ...list] //Linea importante!
+    this.setState({ 
+        list: newList,
+        
+     })
+  }
+
+  // La llama el botón DELETE del componente CARD. 
+  handleRemoveEmployee = id => {
+    const { list } = this.state
+    const listWithoutMusician = list.filter(musician => musician.id !== id)
+    this.setState({ list: listWithoutMusician })
+  }
+
+  // La llama el botón de "EDIT" que está en el componente CARD. Guarda en el state todo lo que aparece en setState
+  handleEditMusician = employeeData => {
+    const {name, id} = employeeData
+    this.setState({
+        modalActive: true, // Abre el modal
+        nameToEdit: name, // Guarda el nombre del artista en el que se toco EDIT
+        filterID: id // Guarda el ID del artista
+    })
+  }
+
+  // La llama el INPUT del MODAL que está más abajo con el evento ONCHANGE. Guarda lo que el usuario escribe en el input. 
+  editArtistName = event =>{
+    const { value } = event.target
+    this.setState({ nameToEdit: value }) // Guarda el value del input (lo que el usuario escribio)
+  }
+
+  // La llama el SUBMIT del FORM del MODAL. Guarda el nombre editado y lo muestra en la CARD. 
+  changeArtistName = event => {
+    event.preventDefault();
+    const { list, filterID, nameToEdit } = this.state
+    const newName = list.find(musician => musician.id == filterID); // Busco el artista al que le quiero cambiar el nombre por el ID
+    newName.name = nameToEdit; // Le agrego el nombre (va a cambiar en la CARD)
+    this.setState({
+        modalActive: false
+    })
+  }
+
+  // CIERRA EL MODAL 
+  handleClose = () =>{
+    this.setState({
+        modalActive: false
+    })
+}
+
+
+
+  render() {
+      //MOSTRAR DATA EN HTML 
+      //SE EJECUTA AL INICIO Y CADA VEZ QUE CAMBIA EL STATE
+
+    const { isLoaded, modalActive} = this.state;
+      
+    return (
+
+          <div className="App">
+            <Header />
+            <Form 
+                handleAddEmployeeSubmit={this.handleAddEmployeeSubmit}
+                handleAddEmployeeChange={this.handleAddEmployeeChange}
+                employeeName={this.state.employeeName}
+            />
+            <Dropdown 
+                handleSelectGenre={this.handleSelectGenre}
+                handleGenreChange={this.handleGenreChange}
+                handleRemoveSelectedGenre={this.handleRemoveSelectedGenre}
+                selectedGenre = {this.state.selectedGenre}
+            />
+
+            {!isLoaded
+                ? <div>
+                    <img src="../img/loading.gif" alt="loading" class="loading"></img>
+                    <p>Loading...</p>
+                  </div>
+                : <Wrapper 
+                    employees={this.state.list} 
+                    handleEmpleadoMesClick={this.handleEmpleadoMesClick} 
+                    empleadoDelMesID = {this.state.empleadoDelMes}
+                    handleRemoveEmployee = {this.handleRemoveEmployee}
+                    handleEditMusician = {this.handleEditMusician}
+                   />
+            }
+            
+            {modalActive && (
+                    <div className='modal is-active'>
+                        <div className='modal-background' />
+                        <div className='modal-card'>
+                            <header className='modal-card-head'>
+                                <p className='modal-card-title'>Edit artist name</p>
+                                <button onClick={this.handleClose} className='delete' aria-label='close' />    
+                            </header>
+                            <section className='modal-card-body'>
+                                <form onSubmit={this.changeArtistName}  className='form-add-employee'>
+                                    <input
+                                        className='input'
+                                        type='text'
+                                        defaultValue={this.state.nameToEdit}
+                                        onChange = {this.editArtistName}
+                                    />
+                                    <button class="button is-primary is-light">Save</button>
+                                </form>
+                            </section>
+                        </div>
+                    </div>
+                )}
+
+          </div>)
+  }
+  
+}
+
+export default App;
+
+/*
+
+---------- CONDITIONAL RENDERING DIVIDIDO EN DOS ----------
+
+ {!isLoaded && (
+    <div>Loading...</div>
+ )}
+
+{isLoaded && (
+   <Wrapper 
+        employees={this.state.list} 
+        handleEmpleadoMesClick={this.handleEmpleadoMesClick} 
+        empleadoDelMesID = {this.state.empleadoDelMes}
+        handleRemoveEmployee = {this.handleRemoveEmployee}
+        handleEditMusician = {this.handleEditMusician}
+    />
+)}
+
+ */
+
+ /*
+
+---------- LISTA DE ARTISTAS HECHA PRIMERO COMO ARRAY DE OBJETOS ----------
+
 
       const musicians = [
         {
@@ -387,267 +603,4 @@ class App extends React.Component {
         },
 
     ];
-
-     this.state = {
-        list: musicians,
-        listBackup: musicians,
-        empleadoDelMes: null,
-        employeeName: '',
-        genreFilter: '',
-        selectedGenre: '',
-        modalActive: false,
-        nameToEdit: '',
-        filterID: ''
-     };
-
-     this.handleEmpleadoMesClick = this.handleEmpleadoMesClick.bind(this)
-     this.handleAddEmployeeSubmit = this.handleAddEmployeeSubmit.bind(this)
-     this.handleAddEmployeeChange = this.handleAddEmployeeChange.bind(this)
-  }
-
-  handleEmpleadoMesClick(employeeId){
-    this.setState({
-        empleadoDelMes:employeeId
-    })
-    console.log('parametro',employeeId) 
-  }
-
-  handleAddEmployeeChange = event => {
-    const { value } = event.target
-    this.setState({ employeeName: value })
-  }
-
-  handleGenreChange = event => {
-        const { value } = event.target
-        const { listBackup } = this.state
-        const listFilteredByGenre = listBackup.filter(musician => musician.genre === value)
-        this.setState({ 
-            genreFilter: value,
-            selectedGenre: value,
-            list: listFilteredByGenre
-        })
-  }
-
-  handleRemoveSelectedGenre = () => {
-    this.setState(prevState => ({ list: prevState.listBackup, selectedGenre: '' }))
- }
-
-  handleAddEmployeeSubmit = event => {
-    event.preventDefault()
-    const { list, employeeName } = this.state
-    const randomGenre = ["Progressive Trance", "Uplifting Trance", "Techno", "Pop & Rock", "Rock", "Metal", "Deep House", "Progressive House", "Drum 'n' Bass", "Synth Pop"];
-
-    const newEmployee = {
-        name: employeeName,
-        genre: randomGenre[ Math.floor(Math.random() * 10) ],
-        avatar: faker.image.avatar(),
-        id: faker.random.uuid(),
-    }
-
-    const newList = [newEmployee, ...list] //Linea importante!
-    this.setState({ 
-        list: newList,
-        
-     })
-  }
-
-  // La llama el botón DELETE del componente CARD. 
-  handleRemoveEmployee = id => {
-    const { list } = this.state
-    const listWithoutMusician = list.filter(musician => musician.id !== id)
-    this.setState({ list: listWithoutMusician })
-  }
-
-  // La llama el botón de "EDIT" que está en el componente CARD. Guarda en el state todo lo que aparece en setState
-  handleEditMusician = employeeData => {
-    const {name, id} = employeeData
-    this.setState({
-        modalActive: true, // Abre el modal
-        nameToEdit: name, // Guarda el nombre del artista en el que se toco EDIT
-        filterID: id // Guarda el ID del artista
-    })
-  }
-
-  // La llama el INPUT del MODAL que está más abajo con el evento ONCHANGE. Guarda lo que el usuario escribe en el input. 
-  editArtistName = event =>{
-    const { value } = event.target
-    this.setState({ nameToEdit: value }) // Guarda el value del input (lo que el usuario escribio)
-  }
-
-  // La llama el SUBMIT del FORM del MODAL. Guarda el nombre editado y lo muestra en la CARD. 
-  changeArtistName = event => {
-    event.preventDefault();
-    const { list, filterID, nameToEdit } = this.state
-    const newName = list.find(musician => musician.id == filterID); // Busco el artista al que le quiero cambiar el nombre por el ID
-    newName.name = nameToEdit; // Le agrego el nombre (va a cambiar en la CARD)
-    this.setState({
-        modalActive: false
-    })
-  }
-
-  // CIERRA EL MODAL 
-  handleClose = () =>{
-    this.setState({
-        modalActive: false
-    })
-}
-
-  componentDidMount() {
-      //FETCH DE DATA
-      this.setState({
-        artists : [
-            {
-                name: "Armin Van Buuren",
-                genre: "Uplifting Trance",
-                avatar: "https://updatemexico.com/wp-content/uploads/2019/10/armin-van-buuren-balance-banner.jpeg"
-            },
-            {
-                name: "Above & Beyond",
-                genre: "Progressive Trance",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Coldplay",
-                genre: "Pop & Rock",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Boris Brejcha",
-                genre: "Techno",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Yotto",
-                genre: "Deep House",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "CHVRCHES",
-                genre: "Synth Pop",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Depeche Mode",
-                genre: "Synth Pop",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Andrew Bayer",
-                genre: "Progressive Trance",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Keane",
-                genre: "Pop & Rock",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Charlotte De Witte",
-                genre: "Techno",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "deadmau5",
-                genre: "Progressive House",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Delta Heavy",
-                genre: "Drum 'n' Bass",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "The Chemical Brothers",
-                genre: "Electrónica",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Lifehouse",
-                genre: "Pop & Rock",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Craig Connelly",
-                genre: "Uplifting Trance",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Ilan Bluestone",
-                genre: "Progressive Trance",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Daft Punk",
-                genre: "Electrónica",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Digitalism",
-                genre: "Electrónica",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-            {
-                name: "Digitalism",
-                genre: "Electrónica",
-                avatar: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Above_%26_Beyond_2011.jpg"
-            },
-        ]})
-  }
-
-  render() {
-      //MOSTRAR DATA EN HTML 
-      //SE EJECUTA AL INICIO Y CADA VEZ QUE CAMBIA EL STATE
-      
-      const { modalActive } = this.state;
-
-      return (
-
-          <div className="App">
-            <Header />
-            <Form 
-                handleAddEmployeeSubmit={this.handleAddEmployeeSubmit}
-                handleAddEmployeeChange={this.handleAddEmployeeChange}
-                employeeName={this.state.employeeName}
-            />
-            <Dropdown 
-                handleSelectGenre={this.handleSelectGenre}
-                handleGenreChange={this.handleGenreChange}
-                handleRemoveSelectedGenre={this.handleRemoveSelectedGenre}
-                selectedGenre = {this.state.selectedGenre}
-            />
-            <Wrapper 
-                employees={this.state.list} 
-                handleEmpleadoMesClick={this.handleEmpleadoMesClick} 
-                empleadoDelMesID = {this.state.empleadoDelMes}
-                handleRemoveEmployee = {this.handleRemoveEmployee}
-                handleEditMusician = {this.handleEditMusician}
-            />
-            
-            {modalActive && (
-                    <div className='modal is-active'>
-                        <div className='modal-background' />
-                        <div className='modal-card'>
-                            <header className='modal-card-head'>
-                                <p className='modal-card-title'>Edit artist name</p>
-                                <button onClick={this.handleClose} className='delete' aria-label='close' />    
-                            </header>
-                            <section className='modal-card-body'>
-                                <form onSubmit={this.changeArtistName}  className='form-add-employee'>
-                                    <input
-                                        className='input'
-                                        type='text'
-                                        defaultValue={this.state.nameToEdit}
-                                        onChange = {this.editArtistName}
-                                    />
-                                    <button class="button is-primary is-light">Save</button>
-                                </form>
-                            </section>
-                        </div>
-                    </div>
-                )}
-
-          </div>)
-  }
-}
-
-export default App;
+    */
