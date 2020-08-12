@@ -65,6 +65,7 @@ class App extends React.Component {
             this.setState({
                 isLoaded: true,
                 list: musicians,
+                listBackup: musicians,
             })
         })
     
