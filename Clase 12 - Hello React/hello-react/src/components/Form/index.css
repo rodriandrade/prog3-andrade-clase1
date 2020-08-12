@@ -1,5 +1,27 @@
-input{
-    width: 75% !important;
-    margin: 0em 1em 1em 0em !important;
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:0 auto;
+    width: 82%;
+}
 
+input{
+    width: 60% !important;
+    margin: 0em 1em 1em 0em !important;
+    background-color: rgb(24, 24, 24) !important;
+    color: white !important;
+    border: none !important;
+    font-family: 'Poppins', sans-serif;
+}
+
+::placeholder{
+    color: rgb(78, 78, 78) !important;
+}
+
+.submitBtn{
+    background-color: rgb(80, 255, 232);
+    color: black;
+    border: none;
+    font-family: 'Poppins', sans-serif;
 }

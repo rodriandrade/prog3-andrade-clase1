@@ -9,9 +9,12 @@ const BtnEmpleadoDelMes = props => {
  
     return (
         <button
-            className='button is-info'
+            className='button colorBtn'
             onClick={()=>handleEmpleadoMesClick(employeeId)}
         >
+            <span className='icon is-small'>
+                <i className='fas fa-award' />
+            </span>
             <span>Grammy</span>
         </button>
     )

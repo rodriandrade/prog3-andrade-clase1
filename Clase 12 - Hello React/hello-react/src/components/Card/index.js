@@ -30,11 +30,22 @@ const Card = (props) => {
         <div className="btnContainer">
         {/*    <Button className="button is-primary" caption="Editar"/> */}
 
-            <button onClick = { () => handleEditMusician(employeeData) } className="button is-primary">Edit</button>
-            <button onClick = { () => handleRemoveEmployee(id) } className="button is-danger">Delete</button>
+            <button onClick = { () => handleEditMusician(employeeData) } className="button colorBtn">
+              <span>Edit</span>
+            <span className='icon is-small'>
+                    <i className='fas fa-edit' />
+                </span>
+            </button>
+            
+            <button onClick = { () => handleRemoveEmployee(id) } className="button colorBtn">
+              <span>Delete</span>
+              <span className='icon is-small'>
+                    <i className='fas fa-times' />
+                </span>
+            </button>
 
             {!isMonthEmployee && 
-              <BtnEmpleadoDelMes className="button is-info is-outlined" employeeId={id} handleEmpleadoMesClick={handleEmpleadoMesClick} caption="Artista del mes"/>
+              <BtnEmpleadoDelMes className="button colorBtn" employeeId={id} handleEmpleadoMesClick={handleEmpleadoMesClick} caption="Artista del mes"/>
             }
 
         </div>

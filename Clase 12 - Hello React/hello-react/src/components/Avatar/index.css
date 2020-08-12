@@ -6,4 +6,6 @@ img{
     border-radius: 50%;
     padding: 1em;
     max-width: 120px;
+    filter: grayscale(100%);
 }
+

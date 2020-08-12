@@ -11,7 +11,7 @@ const Form = (props) =>{
     } = props
 
     return (
-        <div>
+        <div className="formContainer">
           <form onSubmit={handleAddEmployeeSubmit} className='form-add-employee'>
             <input 
             className="input" 
@@ -21,7 +21,7 @@ const Form = (props) =>{
             onChange={handleAddEmployeeChange}
             >
             </input>
-            <button className='button is-success' type='submit'>
+            <button className='button submitBtn' type='submit'>
                 Add Artist
             </button>
           </form>

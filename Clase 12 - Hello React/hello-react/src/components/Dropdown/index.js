@@ -37,8 +37,8 @@ const Dropdown = (props) =>{
                     style={{ marginLeft: '15px' }}
                 >
                     <span>{selectedGenre}</span>
-                    <span className='icon is-small'>
-                        <i className='fas fa-trash-alt' aria-hidden='true' />
+                    <span className='icon is-small' >
+                        <i className='fas fa-trash-alt' />
                     </span>
                 </button>
             )}

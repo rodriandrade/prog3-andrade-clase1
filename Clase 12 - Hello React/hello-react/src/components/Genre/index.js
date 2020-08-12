@@ -1,4 +1,5 @@
 import React from 'react';
+import '../Genre/index.css';
 
 const Genre = ({genre}) => {
     return (

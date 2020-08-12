@@ -5,7 +5,7 @@ const Button = props =>{
     const { caption } = props
 
     return (
-          <button className="button is-primary"> 
+          <button className="button colorBtn"> 
           {caption} 
           </button>
       );
