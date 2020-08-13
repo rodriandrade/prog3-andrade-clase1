@@ -339,7 +339,7 @@ class App extends React.Component {
                                         defaultValue={this.state.nameToEdit}
                                         onChange = {this.editArtistName}
                                     />
-                                    <button class="button submitBtn">Save</button>
+                                    <button class="button submitBtn space">Save</button>
                                 </form>
                             </section>
                         </div>

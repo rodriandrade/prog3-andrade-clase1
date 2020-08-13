@@ -13,7 +13,7 @@
 
 input{
     width: 100% !important;
-    background-color: rgb(24, 24, 24) !important;
+    background-color: rgba(24, 24, 24, 0.486) !important;
     color: white !important;
     border: none !important;
     font-family: 'Poppins', sans-serif;
@@ -29,4 +29,8 @@ input{
     border: none;
     font-family: 'Poppins', sans-serif;
     margin: 0em 0em 2em 1em;
+}
+
+.space{
+    margin: 0em 0em 0em 1em;
 }
