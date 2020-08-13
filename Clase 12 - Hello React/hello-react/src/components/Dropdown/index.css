@@ -1,3 +1,7 @@
+.mainCont{
+    display: flex;
+}
+
 .dropdownContainer{
     margin-bottom:2em;
     display: flex;
@@ -17,8 +21,6 @@
 .contDrop{
     display:flex;
     justify-content: left;
-    width: 60%;
-    margin: 0 auto;
     margin-bottom:2em;
 }
 

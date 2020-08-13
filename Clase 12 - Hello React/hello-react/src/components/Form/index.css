@@ -3,12 +3,16 @@
     flex-direction: column;
     justify-content: center;
     margin:0 auto;
-    width: 82%;
+    width: 100%;
+}
+
+.form-add-employee{
+    display:flex;
+    justify-content: center;
 }
 
 input{
-    width: 60% !important;
-    margin: 0em 1em 1em 0em !important;
+    width: 100% !important;
     background-color: rgb(24, 24, 24) !important;
     color: white !important;
     border: none !important;
@@ -24,4 +28,5 @@ input{
     color: black;
     border: none;
     font-family: 'Poppins', sans-serif;
+    margin: 0em 0em 2em 1em;
 }

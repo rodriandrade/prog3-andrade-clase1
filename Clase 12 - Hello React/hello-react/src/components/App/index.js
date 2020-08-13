@@ -37,16 +37,16 @@ class App extends React.Component {
       }))
 
     this.state = {
-        list: [],
-        listBackup: '',
-        empleadoDelMes: null,
-        employeeName: '',
-        genreFilter: '',
-        selectedGenre: '',
-        modalActive: false,
+        list: [], // Lista de artistas que se va a recorrer para generar las cards. 
+        listBackup: '', // Backup de list para poder filtrar por géneros más adelante. 
+        empleadoDelMes: null, // Propiedad que se llena con el id del empleado del mes
+        employeeName: '', // Se guarda el nombre que se escribe en el input para agregar un artista
+        genreFilter: '', 
+        selectedGenre: '', // 
+        modalActive: false, // Propiedad que abre y cierra el modal según sea true o false. 
         nameToEdit: '',
         filterID: '',
-        isLoaded: false,
+        isLoaded: false, // Propiedad que al volverse true permite la muestra de los datos de la API
      };
 
      this.handleEmpleadoMesClick = this.handleEmpleadoMesClick.bind(this)
@@ -54,9 +54,10 @@ class App extends React.Component {
      this.handleAddEmployeeChange = this.handleAddEmployeeChange.bind(this)
   }
 
-    componentDidMount() {
-    //FETCH DE DATA
-    
+
+  // FETCH A LA API DE ARTISTAS --------------
+
+    componentDidMount() {    
         fetch('https://artists-api.vercel.app/artists')
         .then((response) => {
             return response.json()  
@@ -64,27 +65,28 @@ class App extends React.Component {
         .then((musicians) => {
             console.log(musicians)
             this.setState({
-                isLoaded: true,
+                isLoaded: true, 
                 list: musicians,
                 listBackup: musicians,
             })
         })
-    
     }
 
+ // ARTISTA DEL MES ------------------
+
   handleEmpleadoMesClick(employeeId){
-    const { list } = this.state
     this.setState({
         empleadoDelMes:employeeId
     })
-    console.log('parametro',employeeId) 
-    console.log(list);
   }
 
   handleAddEmployeeChange = event => {
     const { value } = event.target
     this.setState({ employeeName: value })
   }
+
+
+  // FILTRADO POR GÉNERO --------------------------- Se usa la lista backup para filtrar y luego mostrarlos en la lista original
 
   handleGenreChange = event => {
         const { value } = event.target
@@ -97,9 +99,14 @@ class App extends React.Component {
         })
   }
 
+
+  // VOLVER A MOSTRAR LA LISTA ORIGINAL DESPUÉS DE FILTRAR ---------------------
+
   handleRemoveSelectedGenre = () => {
     this.setState(prevState => ({ list: prevState.listBackup, selectedGenre: '' }))
  }
+
+ // AGREGAR NUEVO ARTISTA A LA LISTA ORIGINAL -----------------------------
 
   handleAddEmployeeSubmit = event => {
     event.preventDefault()
@@ -120,7 +127,7 @@ class App extends React.Component {
      })
   }
 
-  // La llama el botón DELETE del componente CARD. 
+  // BORRAR ARTISTA DE LA LISTA -------- La llama el botón DELETE del componente CARD. 
   handleRemoveEmployee = id => {
     const { list } = this.state
     const listWithoutMusician = list.filter(musician => musician.id !== id)
