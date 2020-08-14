@@ -30,7 +30,7 @@ const Card = (props) => {
         <div className="btnContainer">
         {/*    <Button className="button is-primary" caption="Editar"/> */}
 
-            <button onClick = { () => handleEditMusician(employeeData) } className="button colorBtn">
+            <button onClick = { () => handleEditMusician(id) } className="button colorBtn">
               <span className='icon is-small'>
                 <i className='fas fa-edit' />
               </span>

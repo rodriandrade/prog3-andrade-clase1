@@ -47,6 +47,8 @@ class App extends React.Component {
         nameToEdit: '',
         filterID: '',
         isLoaded: false, // Propiedad que al volverse true permite la muestra de los datos de la API
+        musicianToEdit: '',
+        dropdownState: true,
      };
 
      this.handleEmpleadoMesClick = this.handleEmpleadoMesClick.bind(this)
@@ -95,7 +97,8 @@ class App extends React.Component {
         this.setState({ 
             genreFilter: value,
             selectedGenre: value,
-            list: listFilteredByGenre
+            list: listFilteredByGenre,
+            dropdownState: false,
         })
   }
 
@@ -103,7 +106,11 @@ class App extends React.Component {
   // VOLVER A MOSTRAR LA LISTA ORIGINAL DESPUÉS DE FILTRAR ---------------------
 
   handleRemoveSelectedGenre = () => {
-    this.setState(prevState => ({ list: prevState.listBackup, selectedGenre: '' }))
+    this.setState(prevState => ({ 
+        list: prevState.listBackup, 
+        selectedGenre: '',
+        dropdownState: true,
+    }))
  }
 
  // AGREGAR NUEVO ARTISTA A LA LISTA ORIGINAL -----------------------------
@@ -129,36 +136,48 @@ class App extends React.Component {
 
   // BORRAR ARTISTA DE LA LISTA -------- La llama el botón DELETE del componente CARD. 
   handleRemoveEmployee = id => {
-    const { list } = this.state
-    const listWithoutMusician = list.filter(musician => musician.id !== id)
-    this.setState({ list: listWithoutMusician })
+    const { listBackup } = this.state
+    const listWithoutMusician = listBackup.filter(musician => musician.id !== id)
+    this.setState({ 
+        list: listWithoutMusician,
+        listBackup: listWithoutMusician, 
+    })
   }
 
   // La llama el botón de "EDIT" que está en el componente CARD. Guarda en el state todo lo que aparece en setState
-  handleEditMusician = employeeData => {
-    const {name, id} = employeeData
+  handleEditMusician = id => {
+    const { list } = this.state;
+    const selectedMusician = list.find(musician => musician.id === id)
     this.setState({
+        musicianToEdit: selectedMusician,
         modalActive: true, // Abre el modal
-        nameToEdit: name, // Guarda el nombre del artista en el que se toco EDIT
-        filterID: id // Guarda el ID del artista
+        nameToEdit: selectedMusician.name,
     })
   }
 
   // La llama el INPUT del MODAL que está más abajo con el evento ONCHANGE. Guarda lo que el usuario escribe en el input. 
   editArtistName = event =>{
     const { value } = event.target
-    this.setState({ nameToEdit: value }) // Guarda el value del input (lo que el usuario escribio)
+    this.setState(prevState => (
+        {
+            nameToEdit: value,
+            musicianToEdit: { ...prevState.musicianToEdit, name: value}
+        })
+    )
+
   }
 
   // La llama el SUBMIT del FORM del MODAL. Guarda el nombre editado y lo muestra en la CARD. 
   changeArtistName = event => {
     event.preventDefault();
-    const { list, filterID, nameToEdit } = this.state
-    const newName = list.find(musician => musician.id == filterID); // Busco el artista al que le quiero cambiar el nombre por el ID
-    newName.name = nameToEdit; // Le agrego el nombre (va a cambiar en la CARD)
+    const { musicianToEdit, list } = this.state;
+    const listWithoutMusician = list.filter(musician => musician.id !== musicianToEdit.id)
     this.setState({
-        modalActive: false
+        modalActive: false,
+        list: [musicianToEdit, ...listWithoutMusician],
+        listBackup: [musicianToEdit, ...listWithoutMusician],
     })
+
   }
 
   // CIERRA EL MODAL 
@@ -307,6 +326,7 @@ class App extends React.Component {
                 handleGenreChange={this.handleGenreChange}
                 handleRemoveSelectedGenre={this.handleRemoveSelectedGenre}
                 selectedGenre = {this.state.selectedGenre}
+                dropdownState = {this.state.dropdownState}
             />
 
             {!isLoaded

@@ -6,15 +6,20 @@ const Dropdown = (props) =>{
     const {
       handleGenreChange,
       handleRemoveSelectedGenre,
-      selectedGenre
+      selectedGenre,
+      dropdownState
     } = props
+
+    document.getElementById("default")
 
     return (
         
       <div className="mainCont">
         <div className="contDrop">
             <select onChange={handleGenreChange} className="dropdown">
-                <option id="default" value="" hidden>Select Genre</option>
+                {dropdownState && 
+                  <option id="default" value="" selected hidden>Select Genre</option>
+                }
                 <option value="Uplifting Trance">Uplifting Trance</option>
                 <option value="Progressive Trance">Progressive Trance</option>
                 <option value="Techno">Techno</option>
